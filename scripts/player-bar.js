@@ -19,6 +19,7 @@
     player.playPause(nextSong);
   });
 
+  //this is a button to change to the previous song in a list
   $('button#previous').on('click', function(){
     if(player.playState !== 'playing'){ return };
 
@@ -32,7 +33,22 @@
     player.playPause(prevSong);
   });
 
+  //This is a function that updates the current time also takes input to change the current time of the song
+  $('#time-control input').on('input', function(event){
+    player.skipTo(event.target.value);
+  });
 
+  //This is an interval timer set to refresh the timeplayed every second
+  setInterval( () => {
+    if (player.playState !== 'playing') { return; }
+    const currentTime = player.getTime();
+    const duration = player.getDuration();
+    const percent = (currentTime / duration * 100);
+
+    $('#time-control .current-time').text(currentTime);
+    $('#time-control .total-time').text(duration);
+    $('#time-control input').val(percent);
+  }, 1000);
 
 
 
